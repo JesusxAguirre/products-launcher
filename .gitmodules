@@ -7,3 +7,6 @@
 [submodule "products-ms"]
 	path = products-ms
 	url = https://github.com/JesusxAguirre/products-ms.git
+[submodule "auth-ms"]
+	path = auth-ms
+	url = https://github.com/JesusxAguirre/auth-ms.git
