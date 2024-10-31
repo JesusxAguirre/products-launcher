@@ -1,12 +1,12 @@
 services:
-  # NATS Server
+  #NATS Server
   nats-server:
     image: nats:2.10.22-alpine3.20
     ports:
       - "8222:8222"
       - "4222:4222"
 
-  # Microservices
+  #Microservices
   client-gateway:
     build: ./client-gateway
     ports:
@@ -20,61 +20,86 @@ services:
     depends_on:
       - nats-server
 
-  products-ms:
-    build: ./products-ms
+  # products-ms:
+  #   build: ./products-ms
+  #   ports:
+  #     - "3001:3001"
+  #   volumes:
+  #     - ./products-ms/src:/usr/src/app/src
+  #   command: npm run start:dev
+  #   environment:
+  #     - NATS_SERVERS=nats://nats-server:4222
+  #     - PORT=3001
+  #     - DATABASE_URL=postgresql://postgres:master@products-database:5432/productsdb
+  #   depends_on:
+  #     - nats-server
+  #     - products-database
+
+  # orders-ms:
+  #   build: ./orders-ms
+  #   ports:
+  #     - "3002:3002"
+  #   volumes:
+  #     - ./orders-ms/src:/usr/src/app/src
+  #   command: pnpm run start:dev
+  #   environment:
+  #     - NATS_SERVERS=nats://nats-server:4222
+  #     - PORT=3002
+  #     - DATABASE_URL=postgresql://postgres:master@orders-database:5432/ordersdb
+  #   depends_on:
+  #     - nats-server
+  #     - orders-database
+
+  auth-ms:
+    build: ./auth-ms
     ports:
-      - "3001:3001"
+      - "3003:3003"
     volumes:
-      - ./products-ms/src:/usr/src/app/src
+      - ./auth-ms/src:/usr/src/app/src
     command: npm run start:dev
     environment:
-      - NATS_SERVERS=nats://nats-server:4222
-      - PORT=3001
-      - DATABASE_URL=postgresql://postgres:master@products-database:5432/productsdb
+      - NATS_SERVER=nats://nats-server:4222
+      - PORT=3003
+      - DATABASE_URL=postgresql://postgres:master@auth-db:5432/users_db?schema=public
+      - JWT_SECRET="$7e!yw0ladbd#gb^76d(1wnoidmpr*tr8o^#&u*aps)sm%*kv6"
     depends_on:
+      - auth-db
       - nats-server
-      - products-database
 
-  orders-ms:
-    build: ./orders-ms
-    ports:
-      - "3002:3002"
-    volumes:
-      - ./orders-ms/src:/usr/src/app/src
-    command: npm run start:dev
-    environment:
-      - NATS_SERVERS=nats://nats-server:4222
-      - PORT=3002
-      - DATABASE_URL=postgresql://postgres:master@orders-database:5432/ordersdb
-    depends_on:
-      - nats-server
-      - orders-database
+  #Databases
+  # orders-database:
+  #   image: postgres:latest
+  #   restart: always
+  #   volumes:
+  #     - orders_data:/var/lib/postgresql/data
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: master
+  #     POSTGRES_DB: ordersdb
 
-  # Databases
-  orders-database:
+  # products-database:
+  #   image: postgres:latest
+  #   restart: always
+  #   volumes:
+  #     - products_data:/var/lib/postgresql/data
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: master
+  #     POSTGRES_DB: productsdb
+
+  auth-db:
     image: postgres:latest
     restart: always
     volumes:
-      - orders_data:/var/lib/postgresql/data
+      - auth_data:/var/lib/postgresql/data
     ports:
-      - "5433:5432"
+      - "5434:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: master
-      POSTGRES_DB: ordersdb
-
-  products-database:
-    image: postgres:latest
-    restart: always
-    volumes:
-      - products_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: master
-      POSTGRES_DB: productsdb
+      POSTGRES_DB: users_db
 
 volumes:
-  orders_data:
-  products_data:
+  #orders_data:
+  #products_data:
+  auth_data:
