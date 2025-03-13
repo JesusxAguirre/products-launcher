@@ -166,7 +166,7 @@ If you have any questions or suggestions, feel free to reach out:
 
 - **Name**: Jesús Aguirre
 - **GitHub**: [JesusxAguirre](https://github.com/JesusxAguirre)
-- **Email**: [your-email@example.com](mailto:your-email@example.com)
+- **Email**: quijess6@gmail.com
 
 ---
 
