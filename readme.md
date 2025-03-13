@@ -1,204 +1,177 @@
-
 # Products Launcher 🚀
 
-**Products Launcher** es un proyecto de microservicios escalable y modular que utiliza tecnologías modernas como **Docker**, **NATS**, **NestJS** y **Prisma**. Este repositorio sirve como un punto de entrada para gestionar y desplegar los microservicios que componen la aplicación: **Auth**, **Products**, **Orders** y **Client Gateway**.
+**Products Launcher** is a scalable and modular microservices project built using modern technologies like **Docker**, **NATS**, **NestJS**, and **Prisma**. This repository serves as an entry point to manage and deploy the microservices that make up the application: **Auth**, **Products**, **Orders**, and **Client Gateway**.
 
-El proyecto está diseñado para ser una base sólida para aplicaciones distribuidas, con un enfoque en la escalabilidad, la comunicación asíncrona entre servicios y la gestión eficiente de bases de datos.
-
----
-
-## 🛠️ Tecnologías Principales
-
-- **Docker**: Contenerización de los microservicios para un despliegue consistente y aislado.
-- **NATS**: Sistema de mensajería ligero y de alto rendimiento para la comunicación entre microservicios.
-- **NestJS**: Framework backend para Node.js, utilizado para construir aplicaciones escalables y eficientes.
-- **Prisma**: ORM moderno para la gestión de bases de datos con TypeScript.
-- **Git Submodules**: Gestión modular del código fuente, dividido en repositorios independientes para cada microservicio.
+The project is designed to be a solid foundation for distributed applications, with a focus on scalability, asynchronous communication between services, and efficient database management.
 
 ---
 
-## 📂 Estructura del Proyecto
+## 🛠️ Core Technologies
 
-El repositorio principal actúa como un contenedor para los siguientes submódulos:
-
-1. **Auth**: Microservicio de autenticación y autorización.
-2. **Products**: Microservicio para la gestión de productos.
-3. **Orders**: Microservicio para la gestión de pedidos.
-4. **Client Gateway**: Gateway que actúa como punto de entrada para las solicitudes del cliente.
-
-Cada submódulo es un repositorio independiente, lo que permite un desarrollo y despliegue modular.
+- **Docker**: Containerization of microservices for consistent and isolated deployment.
+- **NATS**: Lightweight and high-performance messaging system for communication between microservices.
+- **NestJS**: Backend framework for Node.js, used to build scalable and efficient applications.
+- **Prisma**: Modern ORM for database management with TypeScript.
+- **Git Submodules**: Modular codebase management, split into independent repositories for each microservice.
 
 ---
 
-## 🚀 Cómo Empezar
+## 📂 Project Structure
 
-### Prerrequisitos
+The main repository acts as a container for the following submodules:
 
-- **Docker** y **Docker Compose** instalados.
-- **Node.js** (v16 o superior).
-- **Git** (para manejar submódulos).
+1. **Auth**: Authentication and authorization microservice.
+2. **Products**: Microservice for product management.
+3. **Orders**: Microservice for order management.
+4. **Client Gateway**: Gateway that acts as the entry point for client requests.
 
-### Pasos para Configurar el Proyecto
+Each submodule is an independent repository, enabling modular development and deployment.
 
-1. **Clonar el Repositorio Principal**:
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- **Docker** and **Docker Compose** installed.
+- **Node.js** (v16 or higher).
+- **Git** (for managing submodules).
+
+### Setup Steps
+
+1. **Clone the Main Repository**:
    ```bash
    git clone https://github.com/JesusxAguirre/products-launcher.git
    cd products-launcher
    ```
 
-2. **Inicializar Submódulos**:
+2. **Initialize Submodules**:
    ```bash
    git submodule init
    git submodule update
    ```
 
-3. **Configurar Variables de Entorno**:
-   - Crea un archivo `.env` en cada submódulo basado en el archivo `.env.example` proporcionado.
-   - Asegúrate de configurar correctamente las credenciales de la base de datos y las URLs de NATS.
+3. **Configure Environment Variables**:
+   - Create a `.env` file in each submodule based on the provided `.env.example` file.
+   - Ensure database credentials and NATS URLs are correctly configured.
 
-4. **Construir y Levantar los Contenedores**:
+4. **Build and Start the Containers**:
    ```bash
    docker-compose up --build
    ```
 
-5. **Ejecutar Migraciones con Prisma**:
-   - Entra en el contenedor de cada microservicio y ejecuta las migraciones:
+5. **Run Prisma Migrations**:
+   - Enter each microservice's container and run the migrations:
      ```bash
      docker exec -it <container_id> bash
      npx prisma migrate dev
      ```
 
-6. **Acceder a los Servicios**:
-   - Los microservicios estarán disponibles en los puertos configurados en `docker-compose.yml`.
-   - El **Client Gateway** actuará como punto de entrada para las solicitudes del cliente.
+6. **Access the Services**:
+   - The microservices will be available on the ports configured in `docker-compose.yml`.
+   - The **Client Gateway** will act as the entry point for client requests.
 
 ---
 
-## 🧩 Microservicios
+## 🧩 Microservices
 
 ### 1. **Auth**
-- Gestiona la autenticación y autorización de usuarios.
-- Utiliza JWT (JSON Web Tokens) para la seguridad.
-- Base de datos: PostgreSQL.
+- Handles user authentication and authorization.
+- Uses JWT (JSON Web Tokens) for security.
+- Database: PostgreSQL.
 
 ### 2. **Products**
-- Gestiona el catálogo de productos.
-- Expone endpoints para crear, leer, actualizar y eliminar productos.
-- Base de datos: PostgreSQL.
+- Manages the product catalog.
+- Exposes endpoints for creating, reading, updating, and deleting products.
+- Database: PostgreSQL.
 
 ### 3. **Orders**
-- Gestiona los pedidos realizados por los usuarios.
-- Se comunica con el microservicio de **Products** para validar la disponibilidad de productos.
-- Base de datos: PostgreSQL.
+- Manages orders placed by users.
+- Communicates with the **Products** microservice to validate product availability.
+- Database: PostgreSQL.
 
 ### 4. **Client Gateway**
-- Gateway que centraliza las solicitudes del cliente y las redirige a los microservicios correspondientes.
-- Implementa un patrón de API Gateway para simplificar la comunicación con el frontend.
+- Gateway that centralizes client requests and routes them to the appropriate microservices.
+- Implements an API Gateway pattern to simplify communication with the frontend.
 
 ---
 
-## 🌐 Comunicación entre Microservicios
+## 🌐 Inter-Service Communication
 
-La comunicación entre microservicios se realiza a través de **NATS**, un sistema de mensajería ligero y de alto rendimiento. Esto permite:
+Communication between microservices is handled through **NATS**, a lightweight and high-performance messaging system. This enables:
 
-- **Comunicación Asíncrona**: Los microservicios pueden enviar y recibir mensajes sin necesidad de estar activos simultáneamente.
-- **Escalabilidad**: NATS permite escalar horizontalmente los microservicios sin complicaciones.
-- **Desacoplamiento**: Los microservicios no dependen directamente unos de otros, lo que facilita el mantenimiento y la actualización.
-
----
-
-## 🐳 Docker y Docker Compose
-
-El proyecto utiliza **Docker** para contenerizar cada microservicio y **Docker Compose** para orquestar los contenedores. Esto garantiza:
-
-- **Consistencia**: Todos los entornos (desarrollo, pruebas, producción) son idénticos.
-- **Aislamiento**: Cada microservicio se ejecuta en su propio contenedor, evitando conflictos de dependencias.
-- **Facilidad de Despliegue**: Con un solo comando (`docker-compose up`), todos los servicios se levantan y configuran automáticamente.
+- **Asynchronous Communication**: Microservices can send and receive messages without needing to be active simultaneously.
+- **Scalability**: NATS allows horizontal scaling of microservices without complications.
+- **Decoupling**: Microservices are not directly dependent on each other, making maintenance and updates easier.
 
 ---
 
-## 📊 Prisma y Gestión de Bases de Datos
+## 🐳 Docker and Docker Compose
 
-Cada microservicio utiliza **Prisma** como ORM para interactuar con su base de datos PostgreSQL. Prisma ofrece:
+The project uses **Docker** to containerize each microservice and **Docker Compose** to orchestrate the containers. This ensures:
 
-- **Type Safety**: Queries tipados y autocompletado en TypeScript.
-- **Migraciones Automáticas**: Facilita la gestión de cambios en el esquema de la base de datos.
-- **Relaciones entre Entidades**: Simplifica la definición de relaciones entre tablas.
-
----
-
-## 🤝 Contribuciones
-
-¡Las contribuciones son bienvenidas! Si deseas contribuir al proyecto, sigue estos pasos:
-
-1. Haz un fork del repositorio.
-2. Crea una rama para tu feature (`git checkout -b feature/nueva-funcionalidad`).
-3. Realiza tus cambios y haz commit (`git commit -m 'Añadir nueva funcionalidad'`).
-4. Haz push a la rama (`git push origin feature/nueva-funcionalidad`).
-5. Abre un Pull Request.
+- **Consistency**: All environments (development, testing, production) are identical.
+- **Isolation**: Each microservice runs in its own container, avoiding dependency conflicts.
+- **Ease of Deployment**: With a single command (`docker-compose up`), all services are started and configured automatically.
 
 ---
 
-## 📄 Licencia
+## 📊 Prisma and Database Management
 
-Este proyecto está bajo la licencia **MIT**. Consulta el archivo [LICENSE](LICENSE) para más detalles.
+Each microservice uses **Prisma** as the ORM to interact with its PostgreSQL database. Prisma provides:
+
+- **Type Safety**: Typed queries and autocompletion in TypeScript.
+- **Automatic Migrations**: Simplifies managing changes to the database schema.
+- **Entity Relationships**: Makes defining relationships between tables easier.
 
 ---
 
-## ✉️ Contacto
+## 🧪 Testing
 
-Si tienes alguna pregunta o sugerencia, no dudes en contactarme:
+Each microservice includes unit and integration tests. To run the tests:
 
-- **Nombre**: Jesús Aguirre
+1. Enter the microservice's container:
+   ```bash
+   docker exec -it <container_id> bash
+   ```
+
+2. Run the tests:
+   ```bash
+   npm test
+   ```
+
+---
+
+## 🤝 Contributions
+
+Contributions are welcome! If you'd like to contribute to the project, follow these steps:
+
+1. Fork the repository.
+2. Create a feature branch (`git checkout -b feature/new-feature`).
+3. Make your changes and commit them (`git commit -m 'Add new feature'`).
+4. Push to the branch (`git push origin feature/new-feature`).
+5. Open a Pull Request.
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
+
+---
+
+## ✉️ Contact
+
+If you have any questions or suggestions, feel free to reach out:
+
+- **Name**: Jesús Aguirre
 - **GitHub**: [JesusxAguirre](https://github.com/JesusxAguirre)
-- **Correo**: quijess6@gmail.com
+- **Email**: [your-email@example.com](mailto:your-email@example.com)
 
 ---
 
-¡Gracias por visitar **Products Launcher**! 🚀
+Thanks for visiting **Products Launcher**! 🚀
 
 ---
 
-Este `README.md` está diseñado para ser claro, profesional y fácil de seguir. Si necesitas ajustes adicionales, no dudes en decírmelo. 😊
-
-## Dev
-
-1. Clonar el repositorio
-2. Crear un .env basado en el .env.template
-3. Ejecutar el comando `git submodule update --init --recursive` para reconstruir los sub-módulos
-4. Ejecutar el comando `docker compose up --build`
-
-### Pasos para crear los Git Submodules
-
-1. Crear un nuevo repositorio en GitHub
-2. Clonar el repositorio en la máquina local
-3. Añadir el submodule, donde `repository_url` es la url del repositorio y `directory_name` es el nombre de la carpeta donde quieres que se guarde el sub-módulo (no debe de existir en el proyecto)
-
-```
-git submodule add <repository_url> <directory_name>
-```
-
-4. Añadir los cambios al repositorio (git add, git commit, git push)
-   Ej:
-
-```
-git add .
-git commit -m "Add submodule"
-git push
-```
-
-5. Inicializar y actualizar Sub-módulos, cuando alguien clona el repositorio por primera vez, debe de ejecutar el siguiente comando para inicializar y actualizar los sub-módulos
-
-```
-git submodule update --init --recursive
-```
-
-6. Para actualizar las referencias de los sub-módulos
-
-```
-git submodule update --remote
-```
-
-
-
-Si se hace al revés, se perderán las referencias de los sub-módulos en el repositorio principal y tendremos que resolver conflictos.
+This `README.md` is designed to be clear, professional, and easy to follow. If you need further adjustments, let me know! 😊
