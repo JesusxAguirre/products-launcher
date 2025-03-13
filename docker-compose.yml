@@ -20,35 +20,35 @@ services:
     depends_on:
       - nats-server
 
-  # products-ms:
-  #   build: ./products-ms
-  #   ports:
-  #     - "3001:3001"
-  #   volumes:
-  #     - ./products-ms/src:/usr/src/app/src
-  #   command: npm run start:dev
-  #   environment:
-  #     - NATS_SERVERS=nats://nats-server:4222
-  #     - PORT=3001
-  #     - DATABASE_URL=postgresql://postgres:master@products-database:5432/productsdb
-  #   depends_on:
-  #     - nats-server
-  #     - products-database
+  products-ms:
+     build: ./products-ms
+     ports:
+       - "3001:3001"
+     volumes:
+       - ./products-ms/src:/usr/src/app/src
+     command: npm run start:dev
+     environment:
+       - NATS_SERVERS=nats://nats-server:4222
+       - PORT=3001
+       - DATABASE_URL=postgresql://postgres:master@products-database:5432/productsdb
+     depends_on:
+       - nats-server
+       - products-database
 
-  # orders-ms:
-  #   build: ./orders-ms
-  #   ports:
-  #     - "3002:3002"
-  #   volumes:
-  #     - ./orders-ms/src:/usr/src/app/src
-  #   command: pnpm run start:dev
-  #   environment:
-  #     - NATS_SERVERS=nats://nats-server:4222
-  #     - PORT=3002
-  #     - DATABASE_URL=postgresql://postgres:master@orders-database:5432/ordersdb
-  #   depends_on:
-  #     - nats-server
-  #     - orders-database
+   orders-ms:
+     build: ./orders-ms
+     ports:
+       - "3002:3002"
+     volumes:
+       - ./orders-ms/src:/usr/src/app/src
+     command: pnpm run start:dev
+     environment:
+       - NATS_SERVERS=nats://nats-server:4222
+       - PORT=3002
+       - DATABASE_URL=postgresql://postgres:master@orders-database:5432/ordersdb
+     depends_on:
+       - nats-server
+       - orders-database
 
   auth-ms:
     build: ./auth-ms
@@ -67,25 +67,25 @@ services:
       - nats-server
 
   #Databases
-  # orders-database:
-  #   image: postgres:latest
-  #   restart: always
-  #   volumes:
-  #     - orders_data:/var/lib/postgresql/data
-  #   environment:
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: master
-  #     POSTGRES_DB: ordersdb
+   orders-database:
+     image: postgres:latest
+     restart: always
+     volumes:
+       - orders_data:/var/lib/postgresql/data
+     environment:
+       POSTGRES_USER: postgres
+       POSTGRES_PASSWORD: master
+       POSTGRES_DB: ordersdb
 
-  # products-database:
-  #   image: postgres:latest
-  #   restart: always
-  #   volumes:
-  #     - products_data:/var/lib/postgresql/data
-  #   environment:
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: master
-  #     POSTGRES_DB: productsdb
+   products-database:
+     image: postgres:latest
+     restart: always
+     volumes:
+       - products_data:/var/lib/postgresql/data
+     environment:
+       POSTGRES_USER: postgres
+       POSTGRES_PASSWORD: master
+       POSTGRES_DB: productsdb
 
   auth-db:
     image: postgres:latest
@@ -100,6 +100,6 @@ services:
       POSTGRES_DB: users_db
 
 volumes:
-  #orders_data:
-  #products_data:
+  orders_data:
+  products_data:
   auth_data:
